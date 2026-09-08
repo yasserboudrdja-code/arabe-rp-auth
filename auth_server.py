@@ -5,7 +5,6 @@ app = Flask(__name__)
 
 CLIENT_ID = "1546980944408215653"  
 CLIENT_SECRET = "yx4hnnxdZJ7PHdpb7JrJ_oOCC340ifFX" 
-REDIRECT_URI = "http://localhost:5000/callback"
 GUILD_ID = "1545798490838409336" 
 ROLE_ID = "1546988108405547149"
 
@@ -15,10 +14,13 @@ RESULT_BG_URL = "https://cdn.discordapp.com/attachments/1531373533760979055/1546
 
 @app.route("/")
 def home():
+    # استخدام رابط ديناميكي يتأقلم مع Render تلقائياً
+    host_url = request.host_url.rstrip('/')
+    redirect_uri = f"{host_url}/callback"
+    
     discord_auth_url = (
         f"https://discord.com/api/oauth2/authorize?client_id={CLIENT_ID}"
-        f"&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fcallback"
-        f"&response_type=code&scope=identify%20guilds.members.read"
+        f"&redirect_uri={redirect_uri}&response_type=code&scope=identify%20guilds.members.read"
     )
     return f"""
     <html>
@@ -138,12 +140,15 @@ def callback():
     if not code:
         return "<h2 style='color:red; text-align:center; margin-top:50px;'>❌ خطأ: لم يتم استلام كود التحقق من ديسكورد.</h2>"
 
+    host_url = request.host_url.rstrip('/')
+    redirect_uri = f"{host_url}/callback"
+
     data = {
         "client_id": CLIENT_ID,
         "client_secret": CLIENT_SECRET,
         "grant_type": "authorization_code",
         "code": code,
-        "redirect_uri": REDIRECT_URI,
+        "redirect_uri": redirect_uri,
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     r = requests.post("https://discord.com/api/oauth2/token", data=data, headers=headers)
@@ -243,4 +248,4 @@ def callback():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-
+    
