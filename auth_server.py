@@ -297,12 +297,7 @@ def success_page():
             </style>
             <script>
                 function closeTab() {{
-                    try {{
-                        window.close();
-                    }} catch(e) {{}}
-                    try {{
-                        window.location.href = "about:blank";
-                    }} catch(e) {{}}
+                    window.close();
                 }}
             </script>
         </head>
