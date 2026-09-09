@@ -2,7 +2,7 @@ from flask import Flask, redirect, request, session
 import requests
 
 app = Flask(__name__)
-app.secret_key = "ar_roleplay_secret_session_key" # مفتاح لتأمين الجلسة المؤقتة
+app.secret_key = "ar_roleplay_secret_session_key"
 
 CLIENT_ID = "1546980944408215653"  
 CLIENT_SECRET = "yx4hnnxdZJ7PHdpb7JrJ_oOCC340ifFX" 
@@ -14,7 +14,6 @@ RESULT_BG_URL = "https://cdn.discordapp.com/attachments/1531373533760979055/1546
 
 @app.route("/")
 def home():
-    # إذا كان اللاعب مسجل مسبقاً في هذه الجلسة، نوجهه مباشرة لصفحة النجاح
     if session.get('whitelisted'):
         return redirect("/success-page")
 
@@ -171,7 +170,6 @@ def callback():
     roles = member_data.get("roles", [])
 
     if ROLE_ID in roles:
-        # حفظ الجلسة طالما اللعبة وتيرمكس يعملان
         session['whitelisted'] = True
         return redirect("/success-page")
     else:
@@ -275,7 +273,7 @@ def success_page():
                     font-family: sans-serif;
                 }}
                 .box {{
-                    background: rgba(0, 0, 0, 0.8);
+                    background: rgba(0, 0, 0, 0.85);
                     padding: 30px 50px;
                     border-radius: 12px;
                     border: 2px solid #22c55e;
@@ -299,19 +297,24 @@ def success_page():
                     font-size: 15px;
                     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
                     display: inline-block;
+                    cursor: pointer;
                 }}
             </style>
             <script>
-                // محاولة إغلاق النافذة تلقائياً بعد 2 ثانية
-                setTimeout(function() {{
-                    try {{ window.close(); }} catch(e) {{}}
-                }}, 2000);
+                function closeTab() {{
+                    try {{
+                        window.close();
+                    }} catch(e) {{}}
+                    try {{
+                        window.location.href = "about:blank";
+                    }} catch(e) {{}}
+                }}
             </script>
         </head>
         <body>
             <div class="box">
                 <h2>Welcome To Arabe RolePlay 🟢</h2>
-                <a href="#" onclick="window.close(); return false;" class="btn-close">Retour au jeu</a>
+                <a href="javascript:void(0);" onclick="closeTab();" class="btn-close">Retour au jeu</a>
             </div>
         </body>
     </html>
