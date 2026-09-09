@@ -199,8 +199,11 @@ def callback():
                 </style>
                 <script>
                     setTimeout(function() {{
-                        window.location.href = "about:blank";
-                        window.close();
+                        try {{
+                            window.close();
+                        }} catch(e) {{}}
+                        // إغلاق الكاستم تاب بشكل نظيف عبر الارجاع للخلف
+                        window.location.href = "content://com.android.browser.home/";
                     }}, 3000);
                 </script>
             </head>
