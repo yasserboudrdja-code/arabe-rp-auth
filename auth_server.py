@@ -1,8 +1,7 @@
-from flask import Flask, redirect, request, session
+from flask import Flask, redirect, request
 import requests
 
 app = Flask(__name__)
-app.secret_key = "ar_roleplay_secret_session_key"
 
 CLIENT_ID = "1546980944408215653"  
 CLIENT_SECRET = "yx4hnnxdZJ7PHdpb7JrJ_oOCC340ifFX" 
@@ -14,9 +13,6 @@ RESULT_BG_URL = "https://cdn.discordapp.com/attachments/1531373533760979055/1546
 
 @app.route("/")
 def home():
-    if session.get('whitelisted'):
-        return redirect("/success-page")
-
     host_url = request.host_url.rstrip('/')
     redirect_uri = f"{host_url}/callback"
     
@@ -170,7 +166,6 @@ def callback():
     roles = member_data.get("roles", [])
 
     if ROLE_ID in roles:
-        session['whitelisted'] = True
         return redirect("/success-page")
     else:
         return f"""
