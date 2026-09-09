@@ -297,6 +297,8 @@ def success_page():
             </style>
             <script>
                 function closeTab() {{
+                    // محاولة إغلاق التاب بعدة طرق لتجاوز قيود متصفح الموبايل
+                    window.open('', '_self', '');
                     window.close();
                 }}
             </script>
