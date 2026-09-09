@@ -1,19 +1,23 @@
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, session
 import requests
 
 app = Flask(__name__)
+app.secret_key = "ar_roleplay_secret_session_key" # مفتاح لتأمين الجلسة المؤقتة
 
 CLIENT_ID = "1546980944408215653"  
 CLIENT_SECRET = "yx4hnnxdZJ7PHdpb7JrJ_oOCC340ifFX" 
 GUILD_ID = "1545798490838409336" 
 ROLE_ID = "1546988108405547149"
 
-# روابط الصور المباشرة المحدثة
 HOME_BG_URL = "https://cdn.discordapp.com/attachments/1531373533760979055/1546896479115812864/file_00000000650481f5b7aa46ea9582d574.png?ex=6aa1731c&is=6aa0219c&hm=d0c0bb83e85af82ecf87396dab1ed823eb9a9b9333a97c878ff615a7d81d4822&"
 RESULT_BG_URL = "https://cdn.discordapp.com/attachments/1531373533760979055/1546896421423419513/file_000000005658820688c680d594e622b6.png?ex=6aa1730e&is=6aa0218e&hm=3badafef87f454a9db836eba47f0a3976b17f8d456631431773280bec5dd5861&"
 
 @app.route("/")
 def home():
+    # إذا كان اللاعب مسجل مسبقاً في هذه الجلسة، نوجهه مباشرة لصفحة النجاح
+    if session.get('whitelisted'):
+        return redirect("/success-page")
+
     host_url = request.host_url.rstrip('/')
     redirect_uri = f"{host_url}/callback"
     
@@ -167,53 +171,9 @@ def callback():
     roles = member_data.get("roles", [])
 
     if ROLE_ID in roles:
-        return f"""
-        <html>
-            <head>
-                <style>
-                    body {{
-                        background: url('{RESULT_BG_URL}') no-repeat center center fixed;
-                        background-size: cover;
-                        height: 100vh;
-                        margin: 0;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        font-family: sans-serif;
-                    }}
-                    .box {{
-                        background: rgba(0, 0, 0, 0.7);
-                        padding: 40px 60px;
-                        border-radius: 12px;
-                        border: 2px solid #22c55e;
-                        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-                        backdrop-filter: blur(8px);
-                        text-align: center;
-                    }}
-                    h2 {{
-                        color: #22c55e;
-                        font-size: 30px;
-                        margin: 0;
-                        text-shadow: 0 2px 5px rgba(0,0,0,0.9);
-                    }}
-                </style>
-                <script>
-                    setTimeout(function() {{
-                        try {{
-                            window.close();
-                        }} catch(e) {{}}
-                        // إغلاق الكاستم تاب بشكل نظيف عبر الارجاع للخلف
-                        window.location.href = "content://com.android.browser.home/";
-                    }}, 3000);
-                </script>
-            </head>
-            <body>
-                <div class="box">
-                    <h2>Welcome To Arabe RolePlay 🟢</h2>
-                </div>
-            </body>
-        </html>
-        """
+        # حفظ الجلسة طالما اللعبة وتيرمكس يعملان
+        session['whitelisted'] = True
+        return redirect("/success-page")
     else:
         return f"""
         <html>
@@ -297,6 +257,65 @@ def callback():
             </body>
         </html>
         """
+
+@app.route("/success-page")
+def success_page():
+    return f"""
+    <html>
+        <head>
+            <style>
+                body {{
+                    background: url('{RESULT_BG_URL}') no-repeat center center fixed;
+                    background-size: cover;
+                    height: 100vh;
+                    margin: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-family: sans-serif;
+                }}
+                .box {{
+                    background: rgba(0, 0, 0, 0.8);
+                    padding: 30px 50px;
+                    border-radius: 12px;
+                    border: 2px solid #22c55e;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+                    backdrop-filter: blur(8px);
+                    text-align: center;
+                }}
+                h2 {{
+                    color: #22c55e;
+                    font-size: 26px;
+                    margin: 0 0 20px 0;
+                    text-shadow: 0 2px 5px rgba(0,0,0,0.9);
+                }}
+                .btn-close {{
+                    background-color: #22c55e;
+                    color: white;
+                    text-decoration: none;
+                    padding: 12px 25px;
+                    border-radius: 8px;
+                    font-weight: bold;
+                    font-size: 15px;
+                    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+                    display: inline-block;
+                }}
+            </style>
+            <script>
+                // محاولة إغلاق النافذة تلقائياً بعد 2 ثانية
+                setTimeout(function() {{
+                    try {{ window.close(); }} catch(e) {{}}
+                }}, 2000);
+            </script>
+        </head>
+        <body>
+            <div class="box">
+                <h2>Welcome To Arabe RolePlay 🟢</h2>
+                <a href="#" onclick="window.close(); return false;" class="btn-close">Retour au jeu</a>
+            </div>
+        </body>
+    </html>
+    """
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
