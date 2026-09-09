@@ -95,18 +95,6 @@ def home():
                     justify-content: center;
                     width: 100%;
                     box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4);
-                    transition: background 0.2s;
-                }}
-                .discord-btn:active {{
-                    background-color: #dc2626 !important;
-                }}
-                .steps {{
-                    font-size: 11px;
-                    color: #94a3b8;
-                    margin-top: 30px;
-                }}
-                .steps div {{
-                    margin-bottom: 5px;
                 }}
             </style>
         </head>
@@ -120,11 +108,6 @@ def home():
                     </div>
                     <h1>SIGN IN</h1>
                     <p>Continue with your Discord account to enter the game. Your whitelist role will be verified automatically.</p>
-                    <div class="steps">
-                        <div>◆ APPROVE THE REQUEST ON DISCORD</div>
-                        <div>◆ VERIFY WHITELIST ROLE</div>
-                        <div>◆ THE GAME RESUMES ON ITS OWN</div>
-                    </div>
                 </div>
                 <div class="right-pane">
                     <a href="{discord_auth_url}" class="discord-btn">
@@ -140,7 +123,7 @@ def home():
 def callback():
     code = request.args.get("code")
     if not code:
-        return "<h2 style='color:red; text-align:center; margin-top:50px;'>❌ خطأ: لم يتم استلام كود التحقق من ديسكورد.</h2>"
+        return "<h2 style='color:red; text-align:center;'>❌ خطأ في الكود.</h2>"
 
     host_url = request.host_url.rstrip('/')
     redirect_uri = f"{host_url}/callback"
@@ -158,13 +141,13 @@ def callback():
     
     access_token = token_json.get("access_token")
     if not access_token:
-        return f"<h3 style='color:orange; text-align:center;'>❌ فشل في جلب التوكن: {token_json}</h3>"
+        return f"<h3>❌ فشل جلب التوكن</h3>"
 
     auth_header = {"Authorization": f"Bearer {access_token}"}
     member_r = requests.get(f"https://discord.com/api/users/@me/guilds/{GUILD_ID}/member", headers=auth_header)
     
     if member_r.status_code != 200:
-        return "<h2 style='color:#ef4444; text-align:center; margin-top:50px;'>⛔ غير مسموح! أنت لست عضواً في سيرفر Arabe RolePlay.</h2>"
+        return "<h2 style='color:#ef4444; text-align:center;'>⛔ لست عضواً في السيرفر.</h2>"
 
     member_data = member_r.json()
     roles = member_data.get("roles", [])
@@ -232,16 +215,6 @@ def callback():
                         margin-bottom: 8px;
                         box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
                     }}
-                    .btn-secondary {{
-                        background-color: rgba(255, 255, 255, 0.08);
-                        color: #9ca3af;
-                        text-decoration: none;
-                        padding: 10px;
-                        border-radius: 10px;
-                        display: block;
-                        font-weight: 600;
-                        font-size: 13px;
-                    }}
                 </style>
             </head>
             <body>
@@ -250,7 +223,6 @@ def callback():
                     <div class="msg">Roh jewz whitelist 📝🔴</div>
                     <div class="server-name">ar roleplay</div>
                     <a href="https://discord.gg/2KD4v9nZQn" class="btn-primary">Aller sur le serveur</a>
-                    <a href="#" onclick="history.back(); return false;" class="btn-secondary">Ignorer</a>
                 </div>
             </body>
         </html>
@@ -280,47 +252,31 @@ def success_page():
                     box-shadow: 0 10px 30px rgba(0,0,0,0.9);
                     backdrop-filter: blur(8px);
                     text-align: center;
+                    width: 350px;
                 }}
                 h2 {{
                     color: #22c55e;
-                    font-size: 26px;
-                    margin: 0 0 20px 0;
+                    font-size: 24px;
+                    margin: 0 0 15px 0;
                     text-shadow: 0 2px 5px rgba(0,0,0,0.9);
                 }}
-                .btn-close {{
-                    background-color: #22c55e;
-                    color: white;
-                    text-decoration: none;
-                    padding: 12px 25px;
-                    border-radius: 8px;
-                    font-weight: bold;
-                    font-size: 15px;
-                    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-                    display: inline-block;
-                    cursor: pointer;
+                p {{
+                    color: #cbd5e1;
+                    font-size: 13px;
+                    line-height: 1.5;
+                    margin: 0;
                 }}
             </style>
-            <script>
-                function exitPage() {{
-                    // الاعتماد على زر الإغلاق الرسمي للـ Custom Tab أو الرجوع
-                    try {{
-                        window.close();
-                    }} catch(e) {{}}
-                    try {{
-                        history.back();
-                    }} catch(e) {{}}
-                }}
-            </script>
         </head>
         <body>
             <div class="box">
                 <h2>Welcome To Arabe RolePlay 🟢</h2>
-                <a href="javascript:void(0);" onclick="exitPage();" class="btn-close">Retour au jeu</a>
+                <p>تم تأكيد حسابك بنجاح وحصولك على الوايت ليست! اضغط على علامة <b>(X)</b> في أعلى الشاشة للخروج والعودة للعبة.</p>
             </div>
         </body>
     </html>
     """
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port:="5000") # type: ignore
+    app.run(host="0.0.0.0", port=5000)
     
