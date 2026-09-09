@@ -1,7 +1,8 @@
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, session
 import requests
 
 app = Flask(__name__)
+app.secret_key = "ar_roleplay_secret_session_key"
 
 CLIENT_ID = "1546980944408215653"  
 CLIENT_SECRET = "yx4hnnxdZJ7PHdpb7JrJ_oOCC340ifFX" 
@@ -13,6 +14,9 @@ RESULT_BG_URL = "https://cdn.discordapp.com/attachments/1531373533760979055/1546
 
 @app.route("/")
 def home():
+    if session.get('whitelisted'):
+        return redirect("/success-page")
+
     host_url = request.host_url.rstrip('/')
     redirect_uri = f"{host_url}/callback"
     
@@ -166,6 +170,7 @@ def callback():
     roles = member_data.get("roles", [])
 
     if ROLE_ID in roles:
+        session['whitelisted'] = True
         return redirect("/success-page")
     else:
         return f"""
@@ -245,7 +250,7 @@ def callback():
                     <div class="msg">Roh jewz whitelist 📝🔴</div>
                     <div class="server-name">ar roleplay</div>
                     <a href="https://discord.gg/2KD4v9nZQn" class="btn-primary">Aller sur le serveur</a>
-                    <a href="#" onclick="history.go(-2); return false;" class="btn-secondary">Ignorer</a>
+                    <a href="#" onclick="history.back(); return false;" class="btn-secondary">Ignorer</a>
                 </div>
             </body>
         </html>
@@ -296,27 +301,26 @@ def success_page():
                 }}
             </style>
             <script>
-                function returnToGame() {{
-                    // إعادة التوجيه للوراء في سجل المتصفح للخروج من النافذة بشكل آمن
+                function exitPage() {{
+                    // الاعتماد على زر الإغلاق الرسمي للـ Custom Tab أو الرجوع
                     try {{
-                        history.go(-2);
+                        window.close();
                     }} catch(e) {{}}
-                    // احتياطاً إذا لم يرجع، نقوم بإغلاقه أو نقله
-                    setTimeout(function() {{
-                        window.location.href = "/";
-                    }}, 100);
+                    try {{
+                        history.back();
+                    }} catch(e) {{}}
                 }}
             </script>
         </head>
         <body>
             <div class="box">
                 <h2>Welcome To Arabe RolePlay 🟢</h2>
-                <a href="javascript:void(0);" onclick="returnToGame();" class="btn-close">Retour au jeu</a>
+                <a href="javascript:void(0);" onclick="exitPage();" class="btn-close">Retour au jeu</a>
             </div>
         </body>
     </html>
     """
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port:="5000") # type: ignore
     
