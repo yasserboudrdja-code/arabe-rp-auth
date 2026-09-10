@@ -35,139 +35,83 @@ def home():
                     color: white;
                     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                     margin: 0;
-                    height: 100vh;
                     display: flex;
-                    flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    overflow: hidden;
+                    height: 100vh;
                 }}
-                /* شريط العرض العلوي تماماً مثل الصورة */
-                .top-bar {{
-                    position: absolute;
-                    top: 15px;
-                    left: 30px;
-                    right: 30px;
+                .container {{
+                    background: rgba(15, 23, 42, 0.85);
+                    color: #fff;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    width: 750px;
+                    height: 400px;
                     display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-                    padding-bottom: 10px;
+                    border-radius: 8px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+                    backdrop-filter: blur(6px);
                 }}
-                .brand-logo-text {{
-                    font-weight: 900;
-                    letter-spacing: 2px;
-                    font-size: 16px;
-                }}
-                .account-link-badge {{
-                    background: rgba(34, 197, 94, 0.15);
-                    border: 1px solid #22c55e;
-                    color: #22c55e;
-                    padding: 4px 12px;
-                    font-size: 11px;
-                    font-weight: bold;
-                    letter-spacing: 1px;
-                    border-radius: 2px;
-                }}
-                /* الصندوق الرئيسي العريض الذي يملأ الشاشة */
-                .main-box {{
-                    width: 90vw;
-                    height: 75vh;
-                    background: rgba(10, 15, 30, 0.85);
-                    border: 1px solid rgba(255, 255, 255, 0.15);
-                    display: flex;
-                    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-                    backdrop-filter: blur(8px);
+                .left-pane {{
+                    padding: 40px;
+                    flex: 1.2;
+                    border-right: 1px solid rgba(255, 255, 255, 0.1);
                     position: relative;
                 }}
-                .left-section {{
-                    flex: 1.2;
-                    padding: 40px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    border-right: 1px solid rgba(255, 255, 255, 0.1);
-                }}
-                .step-num {{
-                    color: #22c55e;
+                .title-brand {{
+                    font-size: 14px;
                     font-weight: bold;
-                    font-size: 13px;
                     letter-spacing: 1px;
                     margin-bottom: 5px;
                 }}
-                .left-section h1 {{
-                    font-size: 38px;
-                    margin: 0 0 15px 0;
-                    font-weight: 900;
+                .left-pane h1 {{
+                    font-size: 32px;
+                    margin-top: 0;
+                    font-weight: 800;
                     letter-spacing: 1px;
+                    color: #ffffff;
                 }}
-                .left-section p {{
-                    color: #94a3b8;
-                    font-size: 13px;
-                    line-height: 1.5;
-                    margin-bottom: 25px;
-                }}
-                .features-list div {{
-                    font-size: 11px;
+                .left-pane p {{
                     color: #cbd5e1;
-                    margin-bottom: 8px;
-                    letter-spacing: 0.5px;
+                    font-size: 13px;
+                    line-height: 1.6;
                 }}
-                .right-section {{
+                .right-pane {{
                     flex: 1;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    padding: 40px;
-                    background: rgba(0, 0, 0, 0.3);
+                    padding: 30px;
                 }}
                 .discord-btn {{
                     background-color: #1e3a8a;
                     color: white;
                     text-decoration: none;
-                    width: 100%;
-                    max-width: 380px;
-                    height: 60px;
+                    padding: 16px 24px;
+                    font-weight: bold;
+                    font-size: 14px;
+                    border-radius: 4px;
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
-                    padding: 0 20px;
-                    font-weight: bold;
-                    font-size: 15px;
-                    border-radius: 4px;
-                    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.5);
-                    transition: 0.2s;
-                }}
-                .discord-btn:hover {{
-                    background-color: #2563eb;
+                    justify-content: center;
+                    width: 100%;
+                    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4);
                 }}
             </style>
         </head>
         <body>
-            <div class="top-bar">
-                <div class="brand-logo-text">
-                    <span style="color:#22c55e;">ARABE</span> <span style="color:#ef4444;">ROLEPLAY</span> <span style="background:#334155; color:#fff; padding:2px 6px; font-size:10px; border-radius:3px;">MENA</span>
-                </div>
-                <div class="account-link-badge">■ ACCOUNT LINK</div>
-            </div>
-
-            <div class="main-box">
-                <div class="left-section">
-                    <div>
-                        <div class="step-num">01 &nbsp; DISCORD ACCOUNT</div>
-                        <h1>SIGN IN</h1>
-                        <p>Continue with your Discord account to enter the game. Your handle is linked to your player profile.</p>
+            <div class="container">
+                <div class="left-pane">
+                    <div class="title-brand">
+                        <span style="color:#22c55e;">Arabe</span> 
+                        <span style="color:#ef4444;">RolePlay</span> 
+                        <span style="color:#0f172a; background:#e2e8f0; padding:2px 6px; border-radius:4px;">Mobile</span>
                     </div>
-                    <div class="features-list">
-                        <div>◆ APPROVE THE REQUEST ON DISCORD</div>
-                        <div>◆ YOUR HANDLE LINKS TO YOUR PLAYER PROFILE</div>
-                        <div>◆ THE GAME RESUMES ON ITS OWN</div>
-                    </div>
+                    <h1>SIGN IN</h1>
+                    <p>Continue with your Discord account to enter the game. Your whitelist role will be verified automatically.</p>
                 </div>
-                <div class="right-section">
+                <div class="right-pane">
                     <a href="{discord_auth_url}" class="discord-btn">
-                        <span>CONTINUE WITH DISCORD</span>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                        CONTINUE WITH DISCORD
                     </a>
                 </div>
             </div>
