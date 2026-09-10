@@ -47,6 +47,7 @@ def home():
                     width: 750px;
                     height: 400px;
                     display: flex;
+                    flex-direction: row;
                     border-radius: 8px;
                     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
                     backdrop-filter: blur(6px);
