@@ -123,7 +123,7 @@ def home():
 def callback():
     code = request.args.get("code")
     if not code:
-        return "<h2 style='color:red; text-align:center;'>❌ خطأ في الكود.</h2>"
+        return "<h2 style='color:#ef4444; text-align:center; font-family:sans-serif; margin-top:50px;'>Error In Code Restart Site 🔴</h2>"
 
     host_url = request.host_url.rstrip('/')
     redirect_uri = f"{host_url}/callback"
@@ -141,13 +141,64 @@ def callback():
     
     access_token = token_json.get("access_token")
     if not access_token:
-        return f"<h3>❌ فشل جلب التوكن</h3>"
+        return f"<h3 style='color:orange; text-align:center;'>❌ فشل جلب التوكن</h3>"
 
     auth_header = {"Authorization": f"Bearer {access_token}"}
     member_r = requests.get(f"https://discord.com/api/users/@me/guilds/{GUILD_ID}/member", headers=auth_header)
     
     if member_r.status_code != 200:
-        return "<h2 style='color:#ef4444; text-align:center;'>⛔ لست عضواً في السيرفر.</h2>"
+        return f"""
+        <html>
+            <head>
+                <style>
+                    body {{
+                        background: url('{RESULT_BG_URL}') no-repeat center center fixed;
+                        background-size: cover;
+                        height: 100vh;
+                        margin: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    }}
+                    .card {{
+                        background: rgba(24, 24, 27, 0.9);
+                        color: #fff;
+                        width: 400px;
+                        padding: 25px;
+                        border-radius: 16px;
+                        text-align: center;
+                        box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+                        border: 1px solid rgba(255, 255, 255, 0.15);
+                        backdrop-filter: blur(10px);
+                    }}
+                    .msg {{
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #ef4444;
+                        margin-bottom: 15px;
+                    }}
+                    .btn-primary {{
+                        background-color: #5865F2;
+                        color: white;
+                        text-decoration: none;
+                        padding: 12px;
+                        border-radius: 10px;
+                        display: block;
+                        font-weight: bold;
+                        font-size: 14px;
+                        box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <div class="msg">join de sirveur ⛔</div>
+                    <a href="https://discord.gg/2KD4v9nZQn" class="btn-primary">Aller sur le serveur</a>
+                </div>
+            </body>
+        </html>
+        """
 
     member_data = member_r.json()
     roles = member_data.get("roles", [])
@@ -246,17 +297,17 @@ def success_page():
                 }}
                 .box {{
                     background: rgba(0, 0, 0, 0.85);
-                    padding: 30px 50px;
+                    padding: 30px 40px;
                     border-radius: 12px;
                     border: 2px solid #22c55e;
                     box-shadow: 0 10px 30px rgba(0,0,0,0.9);
                     backdrop-filter: blur(8px);
                     text-align: center;
-                    width: 350px;
+                    width: 380px;
                 }}
                 h2 {{
                     color: #22c55e;
-                    font-size: 24px;
+                    font-size: 20px;
                     margin: 0 0 15px 0;
                     text-shadow: 0 2px 5px rgba(0,0,0,0.9);
                 }}
@@ -271,7 +322,7 @@ def success_page():
         <body>
             <div class="box">
                 <h2>Welcome To Arabe RolePlay 🟢</h2>
-                <p>تم تأكيد حسابك بنجاح وحصولك على الوايت ليست! اضغط على علامة <b>(X)</b> في أعلى الشاشة للخروج والعودة للعبة.</p>
+                <p>Done Join Game Click Sur <b>(X)</b> 🟢</p>
             </div>
         </body>
     </html>
