@@ -318,11 +318,17 @@ def success_page():
                     margin: 0;
                 }}
             </style>
+            <script>
+                // بعد 3 ثوانٍ من ظهور واجهة Welcome، يتم إرسال رابط الإغلاق للعودة أوتوماتيكياً للعبة
+                setTimeout(function() {{
+                    window.location.href = "arabe-roleplay://close";
+                }}, 3000);
+            </script>
         </head>
         <body>
             <div class="box">
                 <h2>Welcome To Arabe RolePlay 🟢</h2>
-                <p>Done Join Game Click Sur <b>(X)</b> 🟢</p>
+                <p>Done! Returning to game automatically...</p>
             </div>
         </body>
     </html>
